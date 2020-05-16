@@ -1,0 +1,30 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "System",
+    "outDir": "./temp/system/",
+    "noEmit": false,
+    // ? temp disable during debug
+    "tsBuildInfoFile": "./temp/tsconfig.system.tsbuildinfo",
+    "incremental": true,
+    // ! Once you change the plugin config, you have to remove the tsBuildInfoFile to clear cache
+    "plugins": [
+      {
+        "transform": "@magic-works/ttypescript-browser-like-import-transformer",
+        "before": true,
+        "jsonImport": "inline",
+        "folderImport": true,
+        "rules": {
+          "/(.+)/": {
+            "type": "umd",
+            "target": "__deps__",
+            "treeshake": {
+              "out": "./temp/__deps__system__generated__.js"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "include": ["./src/content-script.ts"]
+}

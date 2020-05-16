@@ -27,3 +27,6 @@ if (globalThis.webpackEnv.target === 'Firefox') {
         globalThis.webpackEnv.firefoxVariant = isMobile ? 'desktop' : 'android'
     }
 }
+globalThis.process = {
+    env: { NODE_ENV: 'development', STORYBOOK: false },
+}
