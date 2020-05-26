@@ -29,6 +29,7 @@ import Services from '../../../extension/service'
 export enum SetupGuideStep {
     FindUsername = 'find-username',
     PasteIntoBio = 'paste-into-bio',
+    SayHelloWorld = 'say-hello-world',
 }
 //#region wizard dialog
 const wizardTheme = (theme: Theme): Theme =>
@@ -388,6 +389,53 @@ function PasteIntoBio({ provePost, onClose, onCancel }: PasteIntoBioProps) {
 }
 //#endregion
 
+//#region say hello world
+const useSayHelloWorldStyles = makeStyles((theme) =>
+    createStyles({
+        primary: {
+            marginTop: 24,
+            marginBottom: 16,
+        },
+        secondary: {
+            color: theme.palette.text.secondary,
+            fontSize: 14,
+        },
+    }),
+)
+
+interface SayHelloWorldProps extends Partial<WizardDialogProps> {
+    onCreate?: () => void
+}
+
+function SayHelloWorld({ onCreate, onClose }: SayHelloWorldProps) {
+    const { t } = useI18N()
+    const classes = useWizardDialogStyles()
+    const sayHelloWorldClasses = useSayHelloWorldStyles()
+    return (
+        <WizardDialog
+            completion={100}
+            status
+            title={t('immersive_setup_say_hello_title')}
+            content={
+                <form>
+                    <Typography className={classNames(classes.tip, sayHelloWorldClasses.primary)} variant="body2">
+                        {t('immersive_setup_say_hello_primary')}
+                    </Typography>
+                    <Typography className={classNames(classes.tip, sayHelloWorldClasses.secondary)} variant="body2">
+                        {t('immersive_setup_say_hello_secondary')}
+                    </Typography>
+                </form>
+            }
+            footer={
+                <ActionButton className={classes.button} variant="contained" color="primary" onClick={onCreate}>
+                    {t('create_now')}
+                </ActionButton>
+            }
+            onClose={onClose}></WizardDialog>
+    )
+}
+//#endregion
+
 //#region setup guide
 export interface SetupGuideProps {
     provePost: string
@@ -412,7 +460,7 @@ export function SetupGuide(props: SetupGuideProps) {
     }, [lastState_])
     useEffect(() => {
         if (step === SetupGuideStep.FindUsername && lastState.username && lastState.status === 'during') {
-            setStep(SetupGuideStep.PasteIntoBio)
+            setStep(SetupGuideStep.SayHelloWorld)
         }
     }, [step, setStep, lastState])
     //#endregion
@@ -434,8 +482,9 @@ export function SetupGuide(props: SetupGuideProps) {
         await Services.Identity.attachProfile(connecting, persona, { connectionConfirmState: 'confirmed' })
         ui.taskGotoProfilePage(connecting)
         await sleep(400)
-        setStep(SetupGuideStep.PasteIntoBio)
+        setStep(SetupGuideStep.SayHelloWorld)
     }
+    const onCreate = async () => {}
     const onCancel = async () => {
         const username_ = getUsername()
         currentImmersiveSetupStatus[ui.networkIdentifier].value = JSON.stringify({
@@ -464,6 +513,8 @@ export function SetupGuide(props: SetupGuideProps) {
             )
         case SetupGuideStep.PasteIntoBio:
             return <PasteIntoBio provePost={provePost} onCancel={onCancel} onClose={onClose}></PasteIntoBio>
+        case SetupGuideStep.SayHelloWorld:
+            return <SayHelloWorld onCreate={onCreate} onClose={onClose}></SayHelloWorld>
         default:
             return null
     }
