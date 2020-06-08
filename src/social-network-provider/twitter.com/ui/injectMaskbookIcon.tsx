@@ -32,7 +32,7 @@ function _(main: () => LiveSelector<HTMLSpanElement, true>, size: number) {
                     new ProfileIdentifier('twitter.com', bioPageUserIDSelector(main).evaluate() || ''),
                 ).then(() => {
                     remover = renderInShadowRoot(<Icon size={size} />, {
-                        normal: () => meta.current,
+                        normal: () => meta.after,
                         shadow: () => meta.afterShadow,
                     })
                 }, remove)
@@ -69,7 +69,7 @@ export function injectMaskbookIconToPost(post: PostInfo) {
         const proxy = DOMProxy(opt)
         proxy.realCurrent = node
         remover = renderInShadowRoot(<Icon size={24} />, {
-            normal: () => node,
+            normal: () => proxy.after,
             shadow: () => proxy.afterShadow,
         })
     }

@@ -11,18 +11,19 @@ untilDomLoaded().then(() => document.body.appendChild(div))
  * so hack on globalThis is not working.
  * We need to use globalThis insteadof window because this script will also run in SSR.
  */
-globalThis.getComputedStyle = new Proxy(
-    globalThis?.window?.getComputedStyle || globalThis.getComputedStyle || (() => {}),
-    {
-        apply(target, thisArg, args) {
-            // ! getComputedStyle won't work with proxy
-            if (!(args[0] instanceof Element)) args[0] = document.body
-            return Reflect.apply(target, thisArg, args)
+if (webpackEnv.target !== 'WKWebview') {
+    globalThis.getComputedStyle = new Proxy(
+        globalThis?.window?.getComputedStyle || globalThis.getComputedStyle || (() => {}),
+        {
+            apply(target, thisArg, args) {
+                // ! getComputedStyle won't work with proxy
+                if (!(args[0] instanceof Element)) args[0] = document.body
+                return Reflect.apply(target, window, args)
+            },
         },
-    },
-)
-Object.assign(globalThis.window || {}, { getComputedStyle })
-
+    )
+    Object.assign(globalThis.window || {}, { getComputedStyle })
+}
 let proxy: ShadowRoot | undefined
 const handler: ProxyHandler<ShadowRoot> = {
     // ! (1) to make it more like a Document

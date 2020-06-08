@@ -28,6 +28,7 @@ export function renderInShadowRoot(
 ) {
     const get = (): HTMLElement => {
         const dom = config.normal()
+        if (webpackEnv.target === 'WKWebview') return dom
         // ? Once it attached ShadowRoot, there is no way back
         if (previousShadowedElement.has(dom)) return config.shadow() as any
         if (renderInShadowRootSettings.value) {
@@ -43,7 +44,7 @@ export function renderInShadowRoot(
     let unmount = () => {}
     const tryRender = () => {
         const element: HTMLElement = get()
-        if (!(element instanceof ShadowRoot)) {
+        if (element.nodeType === document.ELEMENT_NODE) {
             rendered = true
             unmount = mount(
                 element,
@@ -52,6 +53,7 @@ export function renderInShadowRoot(
                 </ErrorBoundary>,
                 config.concurrent,
             )
+            return
         }
         setTimeout(() => {
             if (!(element instanceof ShadowRoot)) {
