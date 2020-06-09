@@ -127,7 +127,7 @@ storiesOf('Plugin: Red Packets', module)
                         mnemonic: ['mem'],
                         name: 'Wallet Name',
                         passphrase: 'password',
-                        eth_balance: new BigNumber(2).multipliedBy(new BigNumber(10).pow(18)), // 2 * (10 ** 18)
+                        eth_balance: new BigNumber(Math.random()).multipliedBy(new BigNumber(10).pow(18)), // 2 * (10 ** 18)
                     },
                 ]}
                 justCreatedRedPacket={undefined}

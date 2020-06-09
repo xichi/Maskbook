@@ -38,6 +38,10 @@ const useStyles = makeStyles((theme: Theme) =>
             marginRight: theme.spacing(1),
             display: 'flex',
             justifyContent: 'space-between',
+            [theme.breakpoints.down('sm')]: {
+                flexDirection: 'column',
+                '& > *': { marginBottom: theme.spacing(1) },
+            },
         },
         provePost: {
             wordBreak: 'break-all',

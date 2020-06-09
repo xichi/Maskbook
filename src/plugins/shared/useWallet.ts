@@ -59,9 +59,17 @@ export function useSelectWallet(...[wallets, tokens, onRequireNewWallet]: Return
     const erc20Balance = selectedToken
         ? `${formatBalance(selectedToken.amount, selectedToken.decimals) ?? '(Syncing...)'} ${selectedToken.symbol}`
         : undefined
+    const roundedEthBalance = selectedWallet
+        ? '~' + formatBalance(selectedWallet.eth_balance, 18)?.slice(0, 6)
+        : undefined
+    const roundedErc20Balance = selectedToken
+        ? '~' + formatBalance(selectedToken.amount, selectedToken.decimals)?.slice(0, 6)
+        : undefined
     return {
         ethBalance,
         erc20Balance,
+        roundedEthBalance,
+        roundedErc20Balance,
         //
         selectedWallet,
         selectedWalletAddress,

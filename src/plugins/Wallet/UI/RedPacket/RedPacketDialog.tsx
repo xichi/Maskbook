@@ -13,6 +13,8 @@ import {
     Select,
     MenuItem,
     DialogProps,
+    useTheme,
+    useMediaQuery,
 } from '@material-ui/core'
 import { useStylesExtends, or } from '../../../../components/custom-ui-helper'
 import { DialogDismissIconUI } from '../../../../components/InjectedComponents/DialogDismissIcon'
@@ -71,6 +73,10 @@ const useNewPacketStyles = makeStyles((theme) =>
         line: {
             display: 'flex',
             margin: theme.spacing(1),
+            [theme.breakpoints.down('sm')]: {
+                flexDirection: 'column',
+                '& > *': { marginBottom: theme.spacing(1) },
+            },
         },
         input: {
             flex: 1,
@@ -112,15 +118,12 @@ function NewPacketUI(props: RedPacketDialogProps & NewPacketProps) {
 
     const useSelectWalletResult = useSelectWallet(wallets, tokens, onRequireNewWallet)
     const {
-        erc20Balance,
-        ethBalance,
+        roundedErc20Balance,
+        roundedEthBalance,
         selectedToken,
         selectedTokenType,
         selectedWallet,
         selectedWalletAddress,
-        setSelectedTokenType,
-        setSelectedWallet,
-        availableTokens,
     } = useSelectWalletResult
 
     const amountPreShareMaxBigint = selectedWallet
@@ -221,9 +224,9 @@ function NewPacketUI(props: RedPacketDialogProps & NewPacketProps) {
             <div className={classes.line}>
                 <Typography variant="body2">
                     {selectedWallet
-                        ? erc20Balance
-                            ? `Balance: ${erc20Balance} (${ethBalance})`
-                            : `Balance: ${ethBalance}`
+                        ? roundedErc20Balance
+                            ? `Balance: ${roundedErc20Balance} (${roundedEthBalance})`
+                            : `Balance: ${roundedEthBalance}`
                         : null}
                     <br />
                     Notice: A small gas fee will occur for publishing.
@@ -250,7 +253,7 @@ const useExistingPacketStyles = makeStyles((theme) =>
     createStyles({
         wrapper: {
             display: 'flex',
-            width: 400,
+            padding: theme.spacing(1),
             flexDirection: 'column',
             overflow: 'auto',
             margin: `${theme.spacing(1)}px auto`,
@@ -454,7 +457,10 @@ export function RedPacketDialogUI(
                 </Typography>
             </DialogTitle>
             <DialogContent className={classes.content}>
-                <AbstractTab height={400} state={[currentTab, setCurrentTab]} tabs={tabs}></AbstractTab>
+                <AbstractTab
+                    height={useMediaQuery(useTheme().breakpoints.only('xs')) ? '100%' : 400}
+                    state={[currentTab, setCurrentTab]}
+                    tabs={tabs}></AbstractTab>
             </DialogContent>
         </ShadowRootDialog>
     )
