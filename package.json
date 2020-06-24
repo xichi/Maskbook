@@ -48,7 +48,7 @@
     "@holoflows/kit": "https://github.com/DimensionDev/holoflows-kit",
     "@material-ui/core": "4.10.0",
     "@material-ui/icons": "4.9.1",
-    "@material-ui/lab": "^4.0.0-alpha.52",
+    "@material-ui/lab": "^4.0.0-alpha.56",
     "@openzeppelin/contracts": "^3.0.2",
     "@servie/events": "^1.0.0",
     "@types/bip39": "^3.0.0",
