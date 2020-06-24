@@ -55,6 +55,9 @@ export async function reset(page: Page) {
         // open the page
         await openPage(page)
 
+        // ensure page is fully loaded
+        await page.waitFor('[data-testid="create_button"]')
+
         // remove all items
         while (true) {
             const settingIcon = await page.$('[data-testid="setting_icon"]')
