@@ -114,7 +114,7 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^9.0.1",
-    "@commitlint/config-conventional": "^9.0.1",
+    "@commitlint/config-conventional": "^9.1.1",
     "@nice-labs/git-flow-init": "^1.0.1",
     "@nice-labs/git-rev": "^3.4.2",
     "@sinonjs/text-encoding": "^0.7.1",
