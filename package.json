@@ -75,7 +75,7 @@
     "@types/tiny-secp256k1": "^1.0.0",
     "@types/use-subscription": "^1.0.0",
     "@types/uuid": "^8.3.0",
-    "anchorme": "^1.1.2",
+    "anchorme": "^2.1.2",
     "arweave": "^1.9.1",
     "async-call-rpc": "^4.1.0",
     "bignumber.js": "^9.0.0",
